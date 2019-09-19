@@ -5,7 +5,8 @@ def createDataSet():
     # +:[3, 3], [4, 3] -:[1, 1]
     X = np.array([[1, 'S'], [1, 'M'], [1, 'M'], [1, 'S'], [1, 'S'], [2, 'S'], [2, 'M'], [2, 'M'], [2, 'L'], [2, 'L'], [3, 'L'], [3, 'M'], [3, 'M'], [3, 'L'], [3, 'L']])
     Y = [-1, -1, 1, 1, -1, -1, -1, 1, 1, 1, 1, 1, 1, 1, -1]
-    return X, Y
+    features = [0, 1]
+    return X, Y, features
 
 # 极大似然估计  朴素贝叶斯算法
 
@@ -16,11 +17,12 @@ def naiveBayes(traindata, labels, features):
     P_y = {}
     for label in labelset:
         P_y[label] = labels.count(label)/len(labels)
-
+    #P_y["-1"], P_y["1"]
+    
     #求P(x^(j) = ajl | Y = ck)
     P_xy = {}
     for y in P_y.keys():
-        y_index = [i for i, label in enumerate(labels) if label == y]  # labels中出现y值的所有数值的下标索引
+        y_index = [i for i in range(len(labels)) if labels[i] == y]  # labels中出现y值的所有数值的下标索引
         for j in range(len(features)):      # features[0] 在trainData[:,0]中出现的值的所有下标索引
             x_index = [i for i, feature in enumerate(trainData[:,j]) if feature == features[j]]
             xy_count = len(set(x_index) & set(y_index))   # set(x_index)&set(y_index)列出两个表相同的元素
